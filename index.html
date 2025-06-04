@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="columns">
+      <section id="gallery">
+        <h2>Galería de Imágenes</h2>
+        <div class="gallery">
+          <img src="resourses/COVER 1 - TECHTALKS UIDE.png" alt="TechTalks" />
+          <img src="resourses/COVER 2 - COMMUNIDE.png" alt="Communide" />
+          <img src="resourses/COVER 3 - MENTEUIDE.png" alt="MenteUIDE" />
+          <img src="resourses/IMAGEN 1 - CAMPUS UIDE.png" alt="Campus UIDE" />
+          <img
+            src="resourses/IMAGEN 2 - LOGO COMBINADO UIDE PODCASTS.png"
+            alt="Logo Podcasts"
+          />
+        </div>
+      </section>
+      <section id="podcast">
+        <h2>Podcast</h2>
+        <img src="resourses/Carlos.png" alt="Carlos" class="podcast-img" />
+        <audio id="customAudio" src="resourses/Podcast Carlos.wav"></audio>
+        <input
+          type="range"
+          id="audio-progress"
+          min="0"
+          value="0"
+          step="0.1"
+          style="width: 100%"
+        />
+        <div class="controls">
+          <button id="audio-play-pause">▶️</button>
+          <button id="audio-backward">⏪</button>
+          <button id="audio-forward">⏩</button>
+          <button id="audio-stop">⏹️</button>
+          <button id="audio-mute">🔊</button>
+          <input
+            type="range"
+            id="audio-volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+            style="width: 80px; vertical-align: middle"
+          />
+        </div>
+        <ul id="audio-list">
+          <li data-src="resourses/Podcast Carlos.wav">Podcast Carlos</li>
+          <li data-src="resourses/Podcast Maria.wav">Podcast Maria</li>
+          <li
+            data-src="resourses/Salud Mental y Bienestar Académico_ Estrategias y Recursos.wav"
+          >
+            Salud Mental y Bienestar Académico
+          </li>
+        </ul>
+      </section>
+      <section id="video">
+        <h2>Video</h2>
+        <video
+          id="customVideo"
+          width="100%"
+          height="auto"
+          src="resourses/Video Promocional UIDE Podcasts.mp4"
+        ></video>
+        <input
+          type="range"
+          id="video-progress"
+          min="0"
+          value="0"
+          step="0.1"
+          style="width: 100%"
+        />
+        <div class="controls">
+          <button id="video-play-pause">▶️</button>
+          <button id="video-backward">⏪</button>
+          <button id="video-forward">⏩</button>
+          <button id="video-stop">⏹️</button>
+          <button id="video-mute">🔊</button>
+        </div>
+        <ul id="video-list">
+          <li data-src="resourses/Video Promocional UIDE Podcasts.mp4">
+            Video Promocional
+          </li>
+          <li data-src="resourses/Tutorial Dinámico de la Plataforma.mp4">
+            Tutorial Dinámico de la Plataforma
+          </li>
+        </ul>
+      </section>
+    </div>
+    <script>
+      const audio = document.getElementById("customAudio");
+      const video = document.getElementById("customVideo");
+      function playAudio() {
+        audio.play();
+      }
+      function pauseAudio() {
+        audio.pause();
+      }
+      function stopAudio() {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+
+      function playVideo() {
+        video.play();
+      }
+      function pauseVideo() {
+        video.pause();
+      }
+      function stopVideo() {
+        video.pause();
+        video.currentTime = 0;
+      }
+    </script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const video = document.getElementById("customVideo");
+        const playPauseBtn = document.getElementById("video-play-pause");
+        const rewindBtn = document.getElementById("video-backward");
+        const forwardBtn = document.getElementById("video-forward");
+        const stopBtn = document.getElementById("video-stop");
+        const muteBtn = document.getElementById("video-mute");
+        const progressBar = document.getElementById("video-progress");
+        const audio = document.getElementById("customAudio");
+        const audioPlayPauseBtn = document.getElementById("audio-play-pause");
+        const audioRewindBtn = document.getElementById("audio-backward");
+        const audioForwardBtn = document.getElementById("audio-forward");
+        const audioStopBtn = document.getElementById("audio-stop");
+        const audioProgressBar = document.getElementById("audio-progress");
+        const audioMuteBtn = document.getElementById("audio-mute");
+        const audioVolumeBar = document.getElementById("audio-volume");
+
+        playPauseBtn.addEventListener("click", () => {
+          video.paused ? video.play() : video.pause();
+          playPauseBtn.textContent = video.paused ? "▶️" : "⏸️";
+        });
+
+        video.addEventListener("play", () => {
+          playPauseBtn.textContent = "⏸️";
+        });
+
+        video.addEventListener("pause", () => {
+          playPauseBtn.textContent = "▶️";
+        });
+
+        rewindBtn.addEventListener("click", () => {
+          video.currentTime -= 10;
+        });
+
+        forwardBtn.addEventListener("click", () => {
+          video.currentTime += 10;
+        });
+
+        stopBtn.addEventListener("click", () => {
+          video.pause();
+          video.currentTime = 0;
+          playPauseBtn.textContent = "▶️";
+        });
+
+        muteBtn.addEventListener("click", () => {
+          video.muted = !video.muted;
+          muteBtn.textContent = video.muted ? "🔇" : "🔊";
+        });
+
+        video.addEventListener("timeupdate", () => {
+          const progress = (video.currentTime / video.duration) * 100;
+
+          progressBar.value = progress;
+        });
+
+        progressBar.addEventListener("input", () => {
+          const newTime = (progressBar.value / 100) * video.duration;
+
+          video.currentTime = newTime;
+        });
+
+        audioPlayPauseBtn.addEventListener("click", () => {
+          if (audio.paused) {
+            audio.play();
+            audioPlayPauseBtn.textContent = "⏸️";
+          } else {
+            audio.pause();
+            audioPlayPauseBtn.textContent = "▶️";
+          }
+        });
+
+        audio.addEventListener("play", () => {
+          audioPlayPauseBtn.textContent = "⏸️";
+        });
+
+        audio.addEventListener("pause", () => {
+          audioPlayPauseBtn.textContent = "▶️";
+        });
+
+        audioRewindBtn.addEventListener("click", () => {
+          audio.currentTime = Math.max(audio.currentTime - 10, 0);
+        });
+
+        audioForwardBtn.addEventListener("click", () => {
+          audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+        });
+
+        audioStopBtn.addEventListener("click", () => {
+          audio.pause();
+          audio.currentTime = 0;
+          audioPlayPauseBtn.textContent = "▶️";
+        });
+
+        audio.addEventListener("timeupdate", () => {
+          audioProgressBar.max = audio.duration;
+          audioProgressBar.value = audio.currentTime;
+        });
+
+        audioProgressBar.addEventListener("input", () => {
+          audio.currentTime = audioProgressBar.value;
+        });
+
+        audioMuteBtn.addEventListener("click", () => {
+          audio.muted = !audio.muted;
+          audioMuteBtn.textContent = audio.muted ? "🔇" : "🔊";
+        });
+
+        audioVolumeBar.addEventListener("input", () => {
+          audio.volume = audioVolumeBar.value;
+          audio.muted = audio.volume == 0;
+          audioMuteBtn.textContent = audio.muted ? "🔇" : "🔊";
+        });
+
+        audio.addEventListener("volumechange", () => {
+          audioVolumeBar.value = audio.volume;
+          audioMuteBtn.textContent =
+            audio.muted || audio.volume == 0 ? "🔇" : "🔊";
+        });
+
+        const audioList = document.getElementById("audio-list");
+        audioList.addEventListener("click", (e) => {
+          if (e.target.tagName === "LI") {
+            Array.from(audioList.children).forEach((li) =>
+              li.classList.remove("selected")
+            );
+
+            e.target.classList.add("selected");
+            audio.src = e.target.getAttribute("data-src");
+            audio.currentTime = 0;
+            audio.play();
+          }
+        });
+
+        const videoList = document.getElementById("video-list");
+        if (videoList) {
+          videoList.addEventListener("click", (e) => {
+            if (e.target.tagName === "LI") {
+              Array.from(videoList.children).forEach((li) =>
+                li.classList.remove("selected")
+              );
+              e.target.classList.add("selected");
+              video.src = e.target.getAttribute("data-src");
+              video.currentTime = 0;
+              video.play();
+            }
+          });
+        }
+      });
+    </script>
+    <script>
+      // Variable global para el último reproductor usado
+      let lastPlayer = audio;
+
+      // Actualiza el último reproductor cuando se da play
+      audio.addEventListener("play", () => {
+        lastPlayer = audio;
+      });
+      video.addEventListener("play", () => {
+        lastPlayer = video;
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+
+        let player = lastPlayer;
+
+        switch (e.code) {
+          case "Space":
+            e.preventDefault();
+            if (player.paused) {
+              player.play();
+            } else {
+              player.pause();
+            }
+            break;
+          case "ArrowRight":
+            player.currentTime = Math.min(
+              player.currentTime + 10,
+              player.duration || player.currentTime + 10
+            );
+            break;
+          case "ArrowLeft":
+            player.currentTime = Math.max(player.currentTime - 10, 0);
+            break;
+          case "ArrowUp":
+            e.preventDefault();
+            player.volume = Math.min(player.volume + 0.05, 1);
+            break;
+          case "ArrowDown":
+            e.preventDefault();
+            player.volume = Math.max(player.volume - 0.05, 0);
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
